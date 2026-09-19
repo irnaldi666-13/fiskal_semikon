@@ -37,18 +37,18 @@ with tab_asumsi:
         st.info(f"Total Tarif Fasilitas Impor Efektif: **{total_tarif_impor*100:.1f}%**")
 
     st.markdown("---")
-    st.header("2. Karakteristik Mikro 9 Sub-Kategori & Instrumen Utama")
+    st.header("2. Karakteristik Mikro 9 Sub-Kategori & Investasi per Unit (USD & Rp)")
     
     df_char_init = pd.DataFrame([
-        {"Segmen": "Design House", "Sub-Kategori": "Small Scale", "Investasi USD M": 15.0, "Ramp-up": 1, "Asset Turnover (x)": 1.2, "EBT Margin": 0.15, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.60, "TH % Transisi": 0.30, "Durasi (Thn)": 5, "Rasio Impor (%)": 0.135},
-        {"Segmen": "Design House", "Sub-Kategori": "Medium Scale", "Investasi USD M": 50.0, "Ramp-up": 1, "Asset Turnover (x)": 1.1, "EBT Margin": 0.20, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.80, "TH % Transisi": 0.40, "Durasi (Thn)": 5, "Rasio Impor (%)": 0.135},
-        {"Segmen": "Design House", "Sub-Kategori": "Large Scale", "Investasi USD M": 200.0, "Ramp-up": 2, "Asset Turnover (x)": 1.0, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 7, "Rasio Impor (%)": 0.135},
-        {"Segmen": "Foundry", "Sub-Kategori": "Small/Power Device", "Investasi USD M": 500.0, "Ramp-up": 2, "Asset Turnover (x)": 0.4, "EBT Margin": 0.20, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 10, "Rasio Impor (%)": 0.65625},
-        {"Segmen": "Foundry", "Sub-Kategori": "Medium/Power Device", "Investasi USD M": 1000.0, "Ramp-up": 4, "Asset Turnover (x)": 0.45, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 15, "Rasio Impor (%)": 0.65625},
-        {"Segmen": "Foundry", "Sub-Kategori": "Large Node/Logic", "Investasi USD M": 7000.0, "Ramp-up": 4, "Asset Turnover (x)": 0.4, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 25, "Rasio Impor (%)": 0.65625},
-        {"Segmen": "Foundry", "Sub-Kategori": "Cutting Edge Technology", "Investasi USD M": 20000.0, "Ramp-up": 4, "Asset Turnover (x)": 0.35, "EBT Margin": 0.30, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 25, "Rasio Impor (%)": 0.65625},
-        {"Segmen": "ATP", "Sub-Kategori": "Fasilitas Perakitan ATP", "Investasi USD M": 300.0, "Ramp-up": 2, "Asset Turnover (x)": 1.0, "EBT Margin": 0.125, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 10, "Rasio Impor (%)": 0.595},
-        {"Segmen": "ATP", "Sub-Kategori": "Advance Packaging ATP (AI)", "Investasi USD M": 1000.0, "Ramp-up": 3, "Asset Turnover (x)": 1.0, "EBT Margin": 0.15, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 15, "Rasio Impor (%)": 0.595}
+        {"Segmen": "Design House", "Sub-Kategori": "Small Scale", "Investasi USD M": 15.0, "Investasi IDR T": (15.0 * kurs_usd)/1000, "Ramp-up": 1, "Asset Turnover (x)": 1.2, "EBT Margin": 0.15, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.60, "TH % Transisi": 0.30, "Durasi (Thn)": 5, "Rasio Impor (%)": 0.135},
+        {"Segmen": "Design House", "Sub-Kategori": "Medium Scale", "Investasi USD M": 50.0, "Investasi IDR T": (50.0 * kurs_usd)/1000, "Ramp-up": 1, "Asset Turnover (x)": 1.1, "EBT Margin": 0.20, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.80, "TH % Transisi": 0.40, "Durasi (Thn)": 5, "Rasio Impor (%)": 0.135},
+        {"Segmen": "Design House", "Sub-Kategori": "Large Scale", "Investasi USD M": 200.0, "Investasi IDR T": (200.0 * kurs_usd)/1000, "Ramp-up": 2, "Asset Turnover (x)": 1.0, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 7, "Rasio Impor (%)": 0.135},
+        {"Segmen": "Foundry", "Sub-Kategori": "Small/Power Device", "Investasi USD M": 500.0, "Investasi IDR T": (500.0 * kurs_usd)/1000, "Ramp-up": 2, "Asset Turnover (x)": 0.4, "EBT Margin": 0.20, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 10, "Rasio Impor (%)": 0.65625},
+        {"Segmen": "Foundry", "Sub-Kategori": "Medium/Power Device", "Investasi USD M": 1000.0, "Investasi IDR T": (1000.0 * kurs_usd)/1000, "Ramp-up": 4, "Asset Turnover (x)": 0.45, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 15, "Rasio Impor (%)": 0.65625},
+        {"Segmen": "Foundry", "Sub-Kategori": "Large Node/Logic", "Investasi USD M": 7000.0, "Investasi IDR T": (7000.0 * kurs_usd)/1000, "Ramp-up": 4, "Asset Turnover (x)": 0.4, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 25, "Rasio Impor (%)": 0.65625},
+        {"Segmen": "Foundry", "Sub-Kategori": "Cutting Edge Technology", "Investasi USD M": 20000.0, "Investasi IDR T": (20000.0 * kurs_usd)/1000, "Ramp-up": 4, "Asset Turnover (x)": 0.35, "EBT Margin": 0.30, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 25, "Rasio Impor (%)": 0.65625},
+        {"Segmen": "ATP", "Sub-Kategori": "Fasilitas Perakitan ATP", "Investasi USD M": 300.0, "Investasi IDR T": (300.0 * kurs_usd)/1000, "Ramp-up": 2, "Asset Turnover (x)": 1.0, "EBT Margin": 0.125, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 10, "Rasio Impor (%)": 0.595},
+        {"Segmen": "ATP", "Sub-Kategori": "Advance Packaging ATP (AI)", "Investasi USD M": 1000.0, "Investasi IDR T": (1000.0 * kurs_usd)/1000, "Ramp-up": 3, "Asset Turnover (x)": 1.0, "EBT Margin": 0.15, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 15, "Rasio Impor (%)": 0.595}
     ])
     edited_char = st.data_editor(df_char_init, num_rows="fixed", use_container_width=True, key="char_editor_9sub")
 
@@ -92,11 +92,11 @@ with tab_asumsi:
     col_k1, col_k2 = st.columns(2)
     
     with col_k1:
-        st.header("4. Asumsi Beasiswa, Magang & Co-Funding per Segmen")
+        st.header("4. Asumsi Beasiswa, Magang & Co-Funding (USD & Rp)")
         df_sdm_init = pd.DataFrame([
-            {"Segmen": "Design House", "Seed Funding/Unit (USD M)": 1.5, "LPDP (Orang/Unit)": 15, "LPDP Biaya/Orang (USD M)": 0.22, "Magang (Orang/Unit)": 50, "Magang Biaya/Orang (USD M)": 0.002, "Co-Funding Riset/Unit (USD M)": 1.67},
-            {"Segmen": "Foundry", "Seed Funding/Unit (USD M)": 0.0, "LPDP (Orang/Unit)": 10, "LPDP Biaya/Orang (USD M)": 0.22, "Magang (Orang/Unit)": 200, "Magang Biaya/Orang (USD M)": 0.002, "Co-Funding Riset/Unit (USD M)": 1.67},
-            {"Segmen": "ATP", "Seed Funding/Unit (USD M)": 0.0, "LPDP (Orang/Unit)": 5, "LPDP Biaya/Orang (USD M)": 0.22, "Magang (Orang/Unit)": 200, "Magang Biaya/Orang (USD M)": 0.002, "Co-Funding Riset/Unit (USD M)": 1.67}
+            {"Segmen": "Design House", "Seed Funding/Unit (USD M)": 1.5, "Seed Funding/Unit (IDR T)": (1.5 * kurs_usd)/1000, "LPDP (Orang/Unit)": 15, "LPDP Biaya/Orang (USD M)": 0.22, "Magang (Orang/Unit)": 50, "Magang Biaya/Orang (USD M)": 0.002, "Co-Funding Riset/Unit (USD M)": 1.67, "Co-Funding Riset/Unit (IDR T)": (1.67 * kurs_usd)/1000},
+            {"Segmen": "Foundry", "Seed Funding/Unit (USD M)": 0.0, "Seed Funding/Unit (IDR T)": 0.0, "LPDP (Orang/Unit)": 10, "LPDP Biaya/Orang (USD M)": 0.22, "Magang (Orang/Unit)": 200, "Magang Biaya/Orang (USD M)": 0.002, "Co-Funding Riset/Unit (USD M)": 1.67, "Co-Funding Riset/Unit (IDR T)": (1.67 * kurs_usd)/1000},
+            {"Segmen": "ATP", "Seed Funding/Unit (USD M)": 0.0, "Seed Funding/Unit (IDR T)": 0.0, "LPDP (Orang/Unit)": 5, "LPDP Biaya/Orang (USD M)": 0.22, "Magang (Orang/Unit)": 200, "Magang Biaya/Orang (USD M)": 0.002, "Co-Funding Riset/Unit (USD M)": 1.67, "Co-Funding Riset/Unit (IDR T)": (1.67 * kurs_usd)/1000}
         ])
         edited_sdm = st.data_editor(df_sdm_init, use_container_width=True, key="sdm_editor")
         
@@ -140,65 +140,68 @@ with tab_asumsi:
 # ==============================================================================
 with tab_output:
     st.sidebar.header("🕹️ Filter Simulasi Dashboard")
-    skenario_pilihan = st.sidebar.selectbox("Pilih Skenario Proyeksi:", ["Skenario 1 (Konservatif)", "Skenario 2 (Moderat)", "Skenario 3 (Optimis)"])
+    skenario_pilihan = st.sidebar.selectbox("Pilih Skenario Proyeksi Utama:", ["Skenario 1 (Konservatif)", "Skenario 2 (Moderat)", "Skenario 3 (Optimis)"])
     col_skenario_map = {"Skenario 1 (Konservatif)": "Skenario 1", "Skenario 2 (Moderat)": "Skenario 2", "Skenario 3 (Optimis)": "Skenario 3"}
     skenario_col = col_skenario_map[skenario_pilihan]
     
     unit_mata_uang = st.sidebar.radio("Tampilkan Nilai Grafik Utama Dalam:", ["IDR (Triliun Rp)", "USD (Juta USD)"])
-
     fase_pilihan = st.sidebar.multiselect("Pilih Fase Evaluasi:", ["Fase 1 (2027-2029)", "Fase 2 (2030-2035)", "Fase 3 (2036-2045)"], default=["Fase 1 (2027-2029)", "Fase 2 (2030-2035)", "Fase 3 (2036-2045)"])
 
-    # ENGINE KALKULASI UTAMA
-    df_m = pd.merge(edited_unit, edited_char, on=["Segmen", "Sub-Kategori"])
-    df_calc = df_m[df_m["Fase"].isin(fase_pilihan)].copy()
-    
-    df_calc["Jumlah Unit"] = df_calc[skenario_col]
-    df_calc["Investasi USD M"] = df_calc["Jumlah Unit"] * df_calc["Investasi USD M"]
-    df_calc["Investasi IDR T"] = (df_calc["Investasi USD M"] * kurs_usd) / 1000
+    # ENGINE CALCULATOR MULTI-SKENARIO
+    def calculate_engine(sk_col):
+        df_m = pd.merge(edited_unit, edited_char, on=["Segmen", "Sub-Kategori"])
+        df_c = df_m.copy()
+        
+        df_c["Jumlah Unit"] = df_c[sk_col]
+        df_c["Investasi USD M"] = df_c["Jumlah Unit"] * df_c["Investasi USD M"]
+        df_c["Investasi IDR T"] = (df_c["Investasi USD M"] * kurs_usd) / 1000
 
-    # 1. KEMENKEU
-    df_calc["Tax Holiday (USD M)"] = (df_calc["Investasi USD M"] * df_calc["Asset Turnover (x)"] * df_calc["EBT Margin"] * pph_badan) * \
-                                      ((df_calc["TH % Utama"] * df_calc["Durasi (Thn)"]) + (df_calc["TH % Transisi"] * durasi_transisi_th)) * \
-                                      (df_calc["Instrumen Utama"] == "Tax Holiday").astype(int)
-    df_calc["Tax Holiday (IDR T)"] = (df_calc["Tax Holiday (USD M)"] * kurs_usd) / 1000
+        # Kemenkeu
+        df_c["Tax Holiday (USD M)"] = (df_c["Investasi USD M"] * df_c["Asset Turnover (x)"] * df_c["EBT Margin"] * pph_badan) * \
+                                        ((df_c["TH % Utama"] * df_c["Durasi (Thn)"]) + (df_c["TH % Transisi"] * durasi_transisi_th)) * \
+                                        (df_c["Instrumen Utama"] == "Tax Holiday").astype(int)
+        df_c["Tax Holiday (IDR T)"] = (df_c["Tax Holiday (USD M)"] * kurs_usd) / 1000
 
-    df_calc["Tax Allowance (USD M)"] = (df_calc["Investasi USD M"] * 0.30 * pph_badan) * (df_calc["Instrumen Utama"] == "Tax Allowance").astype(int)
-    df_calc["Tax Allowance (IDR T)"] = (df_calc["Tax Allowance (USD M)"] * kurs_usd) / 1000
+        df_c["Tax Allowance (USD M)"] = (df_c["Investasi USD M"] * 0.30 * pph_badan) * (df_c["Instrumen Utama"] == "Tax Allowance").astype(int)
+        df_c["Tax Allowance (IDR T)"] = (df_c["Tax Allowance (USD M)"] * kurs_usd) / 1000
 
-    df_calc["Super Deduction (USD M)"] = (df_calc["Investasi USD M"] * 0.03 * super_deduction * pph_badan)
-    df_calc["Super Deduction (IDR T)"] = (df_calc["Super Deduction (USD M)"] * kurs_usd) / 1000
+        df_c["Super Deduction (USD M)"] = (df_c["Investasi USD M"] * 0.03 * super_deduction * pph_badan)
+        df_c["Super Deduction (IDR T)"] = (df_c["Super Deduction (USD M)"] * kurs_usd) / 1000
 
-    df_calc["Fasilitas Impor (USD M)"] = df_calc["Investasi USD M"] * df_calc["Rasio Impor (%)"] * total_tarif_impor
-    df_calc["Fasilitas Impor (IDR T)"] = (df_calc["Fasilitas Impor (USD M)"] * kurs_usd) / 1000
+        df_c["Fasilitas Impor (USD M)"] = df_c["Investasi USD M"] * df_c["Rasio Impor (%)"] * total_tarif_impor
+        df_c["Fasilitas Impor (IDR T)"] = (df_c["Fasilitas Impor (USD M)"] * kurs_usd) / 1000
 
-    df_calc["Total Kemenkeu (USD M)"] = df_calc["Tax Holiday (USD M)"] + df_calc["Tax Allowance (USD M)"] + df_calc["Super Deduction (USD M)"] + df_calc["Fasilitas Impor (USD M)"]
-    df_calc["Total Kemenkeu (IDR T)"] = (df_calc["Total Kemenkeu (USD M)"] * kurs_usd) / 1000
+        df_c["Total Kemenkeu (USD M)"] = df_c["Tax Holiday (USD M)"] + df_c["Tax Allowance (USD M)"] + df_c["Super Deduction (USD M)"] + df_c["Fasilitas Impor (USD M)"]
+        df_c["Total Kemenkeu (IDR T)"] = (df_c["Total Kemenkeu (USD M)"] * kurs_usd) / 1000
 
-    # 2. DANANTARA
-    df_calc = pd.merge(df_calc, edited_danantara[["Segmen", "% Ekuitas Danantara"]], on="Segmen")
-    df_calc["Danantara Equity (USD M)"] = df_calc["Investasi USD M"] * df_calc["% Ekuitas Danantara"]
-    df_calc["Danantara Equity (IDR T)"] = (df_calc["Danantara Equity (USD M)"] * kurs_usd) / 1000
+        # Danantara
+        df_c = pd.merge(df_c, edited_danantara[["Segmen", "% Ekuitas Danantara"]], on="Segmen")
+        df_c["Danantara Equity (USD M)"] = df_c["Investasi USD M"] * df_c["% Ekuitas Danantara"]
+        df_c["Danantara Equity (IDR T)"] = (df_c["Danantara Equity (USD M)"] * kurs_usd) / 1000
 
-    # 3. K/L SPESIFIK SEGMEN (7 PROGRAM INTEGRATED)
-    df_calc = pd.merge(df_calc, edited_sdm, on="Segmen")
-    df_calc["Seed Funding (USD M)"] = df_calc["Jumlah Unit"] * df_calc["Seed Funding/Unit (USD M)"]
-    df_calc["Seed Funding (IDR T)"] = (df_calc["Seed Funding (USD M)"] * kurs_usd) / 1000
+        # K/L
+        df_c = pd.merge(df_c, edited_sdm, on="Segmen")
+        df_c["Seed Funding (USD M)"] = df_c["Jumlah Unit"] * df_c["Seed Funding/Unit (USD M)"]
+        df_c["Seed Funding (IDR T)"] = (df_c["Seed Funding (USD M)"] * kurs_usd) / 1000
 
-    df_calc["LPDP (USD M)"] = df_calc["Jumlah Unit"] * df_calc["LPDP (Orang/Unit)"] * df_calc["LPDP Biaya/Orang (USD M)"]
-    df_calc["LPDP (IDR T)"] = (df_calc["LPDP (USD M)"] * kurs_usd) / 1000
+        df_c["LPDP (USD M)"] = df_c["Jumlah Unit"] * df_c["LPDP (Orang/Unit)"] * df_c["LPDP Biaya/Orang (USD M)"]
+        df_c["LPDP (IDR T)"] = (df_c["LPDP (USD M)"] * kurs_usd) / 1000
 
-    df_calc["Magang (USD M)"] = df_calc["Jumlah Unit"] * df_calc["Magang (Orang/Unit)"] * df_calc["Magang Biaya/Orang (USD M)"]
-    df_calc["Magang (IDR T)"] = (df_calc["Magang (USD M)"] * kurs_usd) / 1000
+        df_c["Magang (USD M)"] = df_c["Jumlah Unit"] * df_c["Magang (Orang/Unit)"] * df_c["Magang Biaya/Orang (USD M)"]
+        df_c["Magang (IDR T)"] = (df_c["Magang (USD M)"] * kurs_usd) / 1000
 
-    df_calc["CoFunding Riset (USD M)"] = df_calc["Jumlah Unit"] * df_calc["Co-Funding Riset/Unit (USD M)"]
-    df_calc["CoFunding Riset (IDR T)"] = (df_calc["CoFunding Riset (USD M)"] * kurs_usd) / 1000
+        df_c["CoFunding Riset (USD M)"] = df_c["Jumlah Unit"] * df_c["Co-Funding Riset/Unit (USD M)"]
+        df_c["CoFunding Riset (IDR T)"] = (df_c["CoFunding Riset (USD M)"] * kurs_usd) / 1000
+        
+        return df_c
 
-    # PROGRAM K/L TERPUSAT
+    df_calc = calculate_engine(skenario_col)
+    df_calc_filtered = df_calc[df_calc["Fase"].isin(fase_pilihan)].copy()
+
+    # Program K/L Terpusat
     biaya_pilot_fab = edited_g4[edited_g4["Parameter"] == "Biaya per pusat (USD M)"][skenario_col].values[0]
-    
     g3_filtered = edited_g3[edited_g3["Fase"].isin(fase_pilihan)].copy()
     
-    # Ambil program per fase
     pusat_desain_df = g3_filtered[g3_filtered["Program"] == "Pusat Desain Chip"][["Fase", skenario_col]].rename(columns={skenario_col: "Pusat Desain Chip (USD M)"})
     teaching_factory_df = g3_filtered[g3_filtered["Program"] == "Teaching Factory"][["Fase", skenario_col]].rename(columns={skenario_col: "Teaching Factory (USD M)"})
     
@@ -219,16 +222,94 @@ with tab_output:
     df_infra_all["Teaching Factory (IDR T)"] = (df_infra_all["Teaching Factory (USD M)"] * kurs_usd) / 1000
     df_infra_all["Pilot Wafer Fab (IDR T)"] = (df_infra_all["Pilot Wafer Fab (USD M)"] * kurs_usd) / 1000
 
-    # ---------------------------------------------------------
-    # VISUALISASI DUKUNGAN FISKAL PER INSTITUSI PER FASE (WITH DATA LABELS)
-    # ---------------------------------------------------------
-    st.subheader(f"📊 1. Proyeksi Dukungan Fiskal per Institusi per Fase ({skenario_pilihan})")
+    # ==============================================================================
+    # PIJAKAN UTAMA 1: VISUALISASI PROYEKSI NILAI INVESTASI
+    # ==============================================================================
+    st.header("📈 1. Proyeksi Nilai Investasi (Pijakan Utama Baseline)")
     
-    fase_inst_df = df_calc.groupby("Fase").agg({
-        "Total Kemenkeu (USD M)": "sum",
-        "Total Kemenkeu (IDR T)": "sum",
-        "Danantara Equity (USD M)": "sum",
-        "Danantara Equity (IDR T)": "sum",
+    col_inv_a, col_inv_b = st.columns(2)
+    
+    with col_inv_a:
+        inv_fase_df = df_calc_filtered.groupby(["Fase", "Segmen"])[["Investasi USD M", "Investasi IDR T"]].sum().reset_index()
+        y_inv_col = "Investasi IDR T" if "IDR" in unit_mata_uang else "Investasi USD M"
+        
+        fig_inv_fase = px.bar(
+            inv_fase_df,
+            x="Fase",
+            y=y_inv_col,
+            color="Segmen",
+            title=f"Investasi per Fase per Segmen ({skenario_pilihan})",
+            barmode="stack",
+            text_auto='.1f'
+        )
+        st.plotly_chart(fig_inv_fase, use_container_width=True)
+        
+    with col_inv_b:
+        inv_total_seg = df_calc_filtered.groupby("Segmen")[["Investasi USD M", "Investasi IDR T"]].sum().reset_index()
+        fig_inv_pie = px.pie(
+            inv_total_seg,
+            names="Segmen",
+            values=y_inv_col,
+            title=f"Total Proporsi Investasi per Segmen ({unit_mata_uang})",
+            hole=0.4
+        )
+        st.plotly_chart(fig_inv_pie, use_container_width=True)
+
+    st.markdown("---")
+
+    # ==============================================================================
+    # PERBANDINGAN KUMULATIF DUKUNGAN FISKAL SPANJANG FASE (2027-2045) PER SKENARIO
+    # ==============================================================================
+    st.header("📊 2. Perbandingan Total Dukungan Fiskal Sepanjang Fase (2027–2045) per Skenario")
+    
+    df_sk1 = calculate_engine("Skenario 1")
+    df_sk2 = calculate_engine("Skenario 2")
+    df_sk3 = calculate_engine("Skenario 3")
+    
+    def get_sk_summary(df_sk, name):
+        s_kem_usd = df_sk["Total Kemenkeu (USD M)"].sum()
+        s_kem_idr = df_sk["Total Kemenkeu (IDR T)"].sum()
+        s_dan_usd = df_sk["Danantara Equity (USD M)"].sum()
+        s_dan_idr = df_sk["Danantara Equity (IDR T)"].sum()
+        s_kl_usd = df_sk["Seed Funding (USD M)"].sum() + df_sk["LPDP (USD M)"].sum() + df_sk["Magang (USD M)"].sum() + df_sk["CoFunding Riset (USD M)"].sum()
+        s_kl_idr = (s_kl_usd * kurs_usd) / 1000
+        
+        return pd.DataFrame([
+            {"Skenario": name, "Institusi": "Kemenkeu", "Dukungan (USD M)": s_kem_usd, "Dukungan (IDR T)": s_kem_idr},
+            {"Skenario": name, "Institusi": "Danantara", "Dukungan (USD M)": s_dan_usd, "Dukungan (IDR T)": s_dan_idr},
+            {"Skenario": name, "Institusi": "K/L Direct", "Dukungan (USD M)": s_kl_usd, "Dukungan (IDR T)": s_kl_idr}
+        ])
+
+    df_comp_skenerio = pd.concat([
+        get_sk_summary(df_sk1, "Skenario 1 (Konservatif)"),
+        get_sk_summary(df_sk2, "Skenario 2 (Moderat)"),
+        get_sk_summary(df_sk3, "Skenario 3 (Optimis)")
+    ], ignore_index=True)
+
+    y_sk_col = "Dukungan (IDR T)" if "IDR" in unit_mata_uang else "Dukungan (USD M)"
+    
+    fig_comp_sk = px.bar(
+        df_comp_skenerio,
+        x="Skenario",
+        y=y_sk_col,
+        color="Institusi",
+        title=f"Komparasi Total Dukungan Fiskal Sepanjang Fase (2027–2045) per Skenario ({unit_mata_uang})",
+        barmode="group",
+        text_auto='.1f'
+    )
+    fig_comp_sk.update_traces(textposition='outside')
+    st.plotly_chart(fig_comp_sk, use_container_width=True)
+
+    st.markdown("---")
+
+    # ==============================================================================
+    # DUKUNGAN FISKAL PER INSTITUSI PER FASE (SKENARIO PILIHAN)
+    # ==============================================================================
+    st.header(f"🏛️ 3. Rincian Dukungan Fiskal per Institusi per Fase ({skenario_pilihan})")
+    
+    fase_inst_df = df_calc_filtered.groupby("Fase").agg({
+        "Total Kemenkeu (USD M)": "sum", "Total Kemenkeu (IDR T)": "sum",
+        "Danantara Equity (USD M)": "sum", "Danantara Equity (IDR T)": "sum",
         "Seed Funding (USD M)": "sum", "Seed Funding (IDR T)": "sum",
         "LPDP (USD M)": "sum", "LPDP (IDR T)": "sum",
         "Magang (USD M)": "sum", "Magang (IDR T)": "sum",
@@ -248,7 +329,7 @@ with tab_output:
         fase_inst_df,
         x="Fase",
         y=y_cols,
-        title=f"Total Dukungan Fiskal & Modal per Institusi per Fase - {skenario_pilihan} ({unit_mata_uang})",
+        title=f"Dukungan Fiskal per Institusi per Fase - {skenario_pilihan} ({unit_mata_uang})",
         barmode="group",
         text_auto='.1f',
         labels={"value": unit_mata_uang, "variable": "Institusi Pengampu"}
@@ -258,16 +339,16 @@ with tab_output:
 
     st.markdown("---")
     
-    # ---------------------------------------------------------
-    # VISUALISASI RINCIAN PER INSTRUMEN PER SEGMEN PER FASE (LENGKAP 7 PROGRAM KL)
-    # ---------------------------------------------------------
-    st.subheader("🎨 2. Visualisasi Rincian Lengkap per Instrumen / Program")
+    # ==============================================================================
+    # RINCIAN INSTRUMEN / PROGRAM PER SEGMEN PER FASE
+    # ==============================================================================
+    st.header("🎨 4. Visualisasi Rincian Lengkap per Instrumen / Program")
     
     tab_kem, tab_dan, tab_kl = st.tabs(["🏛️ Kemenkeu (Per Instrumen Pajak/Impor)", "🏢 Danantara (Per Equity JV)", "🎓 K/L (Lengkap 7 Program Direct Spending)"])
     
     with tab_kem:
         kem_cols = ["Tax Holiday (IDR T)", "Tax Allowance (IDR T)", "Super Deduction (IDR T)", "Fasilitas Impor (IDR T)"] if "IDR" in unit_mata_uang else ["Tax Holiday (USD M)", "Tax Allowance (USD M)", "Super Deduction (USD M)", "Fasilitas Impor (USD M)"]
-        df_kem_melt = df_calc.groupby(["Fase", "Segmen"])[kem_cols].sum().reset_index()
+        df_kem_melt = df_calc_filtered.groupby(["Fase", "Segmen"])[kem_cols].sum().reset_index()
         
         fig_kem = px.bar(
             df_kem_melt,
@@ -282,7 +363,7 @@ with tab_output:
 
     with tab_dan:
         dan_col = "Danantara Equity (IDR T)" if "IDR" in unit_mata_uang else "Danantara Equity (USD M)"
-        df_dan_graph = df_calc.groupby(["Fase", "Segmen"])[dan_col].sum().reset_index()
+        df_dan_graph = df_calc_filtered.groupby(["Fase", "Segmen"])[dan_col].sum().reset_index()
         fig_dan = px.bar(
             df_dan_graph,
             x="Fase",
@@ -296,8 +377,7 @@ with tab_output:
         st.plotly_chart(fig_dan, use_container_width=True)
 
     with tab_kl:
-        # Menyiapkan Alokasi Program Terpusat ke Segmen agar Visualisasi Stack Bar Lengkap
-        df_kl_seg = df_calc.groupby(["Fase", "Segmen"]).agg({
+        df_kl_seg = df_calc_filtered.groupby(["Fase", "Segmen"]).agg({
             "Seed Funding (USD M)": "sum", "Seed Funding (IDR T)": "sum",
             "LPDP (USD M)": "sum", "LPDP (IDR T)": "sum",
             "Magang (USD M)": "sum", "Magang (IDR T)": "sum",
@@ -306,7 +386,6 @@ with tab_output:
 
         df_kl_full_graph = pd.merge(df_kl_seg, df_infra_all, on="Fase", how="left").fillna(0)
         
-        # Alokasi Proporsional Program Terpusat ke Visualisasi Segmen
         df_kl_full_graph["Pusat Desain Chip (USD M)"] = df_kl_full_graph.apply(lambda r: r["Pusat Desain Chip (USD M)"] if r["Segmen"] == "Design House" else 0, axis=1)
         df_kl_full_graph["Pusat Desain Chip (IDR T)"] = (df_kl_full_graph["Pusat Desain Chip (USD M)"] * kurs_usd) / 1000
 
@@ -330,18 +409,23 @@ with tab_output:
         st.plotly_chart(fig_kl, use_container_width=True)
 
     st.markdown("---")
-    st.subheader("📋 3. Tabel Detail Rincian Akhir Simulasi (Dual Currency: USD & Rp)")
+    st.header("📋 5. Tabel Detail Rincian Akhir Simulasi (Dual Currency USD M & IDR T)")
     
-    st.dataframe(df_calc[[
+    st.dataframe(df_calc_filtered[[
         "Fase", "Segmen", "Sub-Kategori", "Jumlah Unit", 
         "Investasi USD M", "Investasi IDR T",
         "Total Kemenkeu (USD M)", "Total Kemenkeu (IDR T)",
         "Danantara Equity (USD M)", "Danantara Equity (IDR T)",
-        "Seed Funding (USD M)", "LPDP (USD M)", "Magang (USD M)", "CoFunding Riset (USD M)"
+        "Seed Funding (USD M)", "Seed Funding (IDR T)",
+        "LPDP (USD M)", "LPDP (IDR T)",
+        "Magang (USD M)", "Magang (IDR T)",
+        "CoFunding Riset (USD M)", "CoFunding Riset (IDR T)"
     ]].style.format({
         "Investasi USD M": "{:,.1f}", "Investasi IDR T": "{:,.2f}",
         "Total Kemenkeu (USD M)": "{:,.1f}", "Total Kemenkeu (IDR T)": "{:,.2f}",
         "Danantara Equity (USD M)": "{:,.1f}", "Danantara Equity (IDR T)": "{:,.2f}",
-        "Seed Funding (USD M)": "{:,.2f}", "LPDP (USD M)": "{:,.2f}", 
-        "Magang (USD M)": "{:,.2f}", "CoFunding Riset (USD M)": "{:,.2f}"
+        "Seed Funding (USD M)": "{:,.2f}", "Seed Funding (IDR T)": "{:,.2f}",
+        "LPDP (USD M)": "{:,.2f}", "LPDP (IDR T)": "{:,.2f}", 
+        "Magang (USD M)": "{:,.2f}", "Magang (IDR T)": "{:,.2f}",
+        "CoFunding Riset (USD M)": "{:,.2f}", "CoFunding Riset (IDR T)": "{:,.2f}"
     }), use_container_width=True)
