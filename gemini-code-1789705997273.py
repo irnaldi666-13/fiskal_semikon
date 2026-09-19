@@ -144,7 +144,11 @@ with tab_output:
     col_skenario_map = {"Skenario 1 (Konservatif)": "Skenario 1", "Skenario 2 (Moderat)": "Skenario 2", "Skenario 3 (Optimis)": "Skenario 3"}
     skenario_col = col_skenario_map[skenario_pilihan]
     
-    unit_mata_uang = st.sidebar.radio("Tampilkan Nilai Grafik Utama Dalam:", ["IDR (Triliun Rp)", "USD (Juta USD)"])
+    # SWITCHER MATA UANG
+    curr_mode = st.sidebar.radio("💱 Tampilkan Seluruh Grafik & Hasil Dalam:", ["Rupiah (Rp Triliun)", "USD (USD Juta)"])
+    unit_mata_uang = "IDR (Triliun Rp)" if "Rupiah" in curr_mode else "USD (Juta USD)"
+    is_idr = "Rupiah" in curr_mode
+
     fase_pilihan = st.sidebar.multiselect("Pilih Fase Evaluasi:", ["Fase 1 (2027-2029)", "Fase 2 (2030-2035)", "Fase 3 (2036-2045)"], default=["Fase 1 (2027-2029)", "Fase 2 (2030-2035)", "Fase 3 (2036-2045)"])
 
     # ENGINE CALCULATOR MULTI-SKENARIO
@@ -225,20 +229,19 @@ with tab_output:
     # ==============================================================================
     # PIJAKAN UTAMA 1: VISUALISASI PROYEKSI NILAI INVESTASI
     # ==============================================================================
-    st.header("📈 1. Proyeksi Nilai Investasi (Pijakan Utama Baseline)")
+    st.header(f"📈 1. Proyeksi Nilai Investasi (Pijakan Baseline - Mode: {curr_mode})")
     
     col_inv_a, col_inv_b = st.columns(2)
+    y_inv_col = "Investasi IDR T" if is_idr else "Investasi USD M"
     
     with col_inv_a:
         inv_fase_df = df_calc_filtered.groupby(["Fase", "Segmen"])[["Investasi USD M", "Investasi IDR T"]].sum().reset_index()
-        y_inv_col = "Investasi IDR T" if "IDR" in unit_mata_uang else "Investasi USD M"
-        
         fig_inv_fase = px.bar(
             inv_fase_df,
             x="Fase",
             y=y_inv_col,
             color="Segmen",
-            title=f"Investasi per Fase per Segmen ({skenario_pilihan})",
+            title=f"Proyeksi Investasi per Fase per Segmen ({skenario_pilihan})",
             barmode="stack",
             text_auto='.1f'
         )
@@ -250,7 +253,7 @@ with tab_output:
             inv_total_seg,
             names="Segmen",
             values=y_inv_col,
-            title=f"Total Proporsi Investasi per Segmen ({unit_mata_uang})",
+            title=f"Proporsi Total Nilai Investasi per Segmen ({unit_mata_uang})",
             hole=0.4
         )
         st.plotly_chart(fig_inv_pie, use_container_width=True)
@@ -258,9 +261,60 @@ with tab_output:
     st.markdown("---")
 
     # ==============================================================================
+    # VISUALISASI KONTRIBUSI PERSENTASE INSTANSI (DOMINANSI INSTITUSI)
+    # ==============================================================================
+    st.header(f"🍰 2. Persentase Kontribusi & Dominansi Dukungan Fiskal per Instansi")
+    
+    total_kem = df_calc_filtered["Total Kemenkeu (IDR T)" if is_idr else "Total Kemenkeu (USD M)"].sum()
+    total_dan = df_calc_filtered["Danantara Equity (IDR T)" if is_idr else "Danantara Equity (USD M)"].sum()
+    
+    infra_tot_col = "IDR T" if is_idr else "USD M"
+    tot_infra_val = (df_infra_all[f"Pusat Desain Chip ({infra_tot_col})"].sum() + 
+                     df_infra_all[f"Teaching Factory ({infra_tot_col})"].sum() + 
+                     df_infra_all[f"Pilot Wafer Fab ({infra_tot_col})"].sum())
+                     
+    tot_kl_sdm = (df_calc_filtered["Seed Funding (IDR T)" if is_idr else "Seed Funding (USD M)"].sum() +
+                  df_calc_filtered["LPDP (IDR T)" if is_idr else "LPDP (USD M)"].sum() +
+                  df_calc_filtered["Magang (IDR T)" if is_idr else "Magang (USD M)"].sum() +
+                  df_calc_filtered["CoFunding Riset (IDR T)" if is_idr else "CoFunding Riset (USD M)"].sum())
+                  
+    total_kl_all = tot_infra_val + tot_kl_sdm
+
+    df_dom = pd.DataFrame([
+        {"Institusi": "Kementerian Keuangan (Insentif Pajak/Kepabeanan)", "Nilai": total_kem},
+        {"Institusi": "Danantara (Penyertaan Modal / Equity Injection)", "Nilai": total_dan},
+        {"Institusi": "Kementerian / Lembaga (Belanja Direct APBN)", "Nilai": total_kl_all}
+    ])
+
+    col_dom1, col_dom2 = st.columns([1.2, 1])
+    
+    with col_dom1:
+        fig_dom = px.pie(
+            df_dom,
+            names="Institusi",
+            values="Nilai",
+            title=f"Porsi Kontribusi Institusi Pengampu ({unit_mata_uang})",
+            hole=0.45,
+            color_discrete_sequence=px.colors.qualitative.Set2
+        )
+        fig_dom.update_traces(textinfo='percent+label')
+        st.plotly_chart(fig_dom, use_container_width=True)
+        
+    with col_dom2:
+        st.subheader("💡 Ringkasan Analisis Dominansi")
+        inst_max = df_dom.loc[df_dom['Nilai'].idxmax()]['Institusi']
+        tot_all_inst = df_dom['Nilai'].sum()
+        pct_max = (df_dom['Nilai'].max() / tot_all_inst) * 100 if tot_all_inst > 0 else 0
+        
+        st.metric("Total Dukungan Fiskal & Modal", f"{tot_all_inst:,.2f} {'Triliun Rp' if is_idr else 'Juta USD'}")
+        st.success(f"**Institusi Paling Dominan:**\n\n**{inst_max}** berkontribusi sebesar **{pct_max:.1f}%** dari total seluruh dukungan publik.")
+
+    st.markdown("---")
+
+    # ==============================================================================
     # PERBANDINGAN KUMULATIF DUKUNGAN FISKAL SPANJANG FASE (2027-2045) PER SKENARIO
     # ==============================================================================
-    st.header("📊 2. Perbandingan Total Dukungan Fiskal Sepanjang Fase (2027–2045) per Skenario")
+    st.header("📊 3. Perbandingan Total Dukungan Fiskal Sepanjang Fase (2027–2045) per Skenario")
     
     df_sk1 = calculate_engine("Skenario 1")
     df_sk2 = calculate_engine("Skenario 2")
@@ -286,7 +340,7 @@ with tab_output:
         get_sk_summary(df_sk3, "Skenario 3 (Optimis)")
     ], ignore_index=True)
 
-    y_sk_col = "Dukungan (IDR T)" if "IDR" in unit_mata_uang else "Dukungan (USD M)"
+    y_sk_col = "Dukungan (IDR T)" if is_idr else "Dukungan (USD M)"
     
     fig_comp_sk = px.bar(
         df_comp_skenerio,
@@ -305,7 +359,7 @@ with tab_output:
     # ==============================================================================
     # DUKUNGAN FISKAL PER INSTITUSI PER FASE (SKENARIO PILIHAN)
     # ==============================================================================
-    st.header(f"🏛️ 3. Rincian Dukungan Fiskal per Institusi per Fase ({skenario_pilihan})")
+    st.header(f"🏛️ 4. Rincian Dukungan Fiskal per Institusi per Fase ({skenario_pilihan})")
     
     fase_inst_df = df_calc_filtered.groupby("Fase").agg({
         "Total Kemenkeu (USD M)": "sum", "Total Kemenkeu (IDR T)": "sum",
@@ -323,7 +377,7 @@ with tab_output:
                                         fase_inst_df["Teaching Factory (USD M)"] + fase_inst_df["Pilot Wafer Fab (USD M)"]
     fase_inst_df["Total K/L (IDR T)"] = (fase_inst_df["Total K/L (USD M)"] * kurs_usd) / 1000
 
-    y_cols = ["Total Kemenkeu (IDR T)", "Danantara Equity (IDR T)", "Total K/L (IDR T)"] if "IDR" in unit_mata_uang else ["Total Kemenkeu (USD M)", "Danantara Equity (USD M)", "Total K/L (USD M)"]
+    y_cols = ["Total Kemenkeu (IDR T)", "Danantara Equity (IDR T)", "Total K/L (IDR T)"] if is_idr else ["Total Kemenkeu (USD M)", "Danantara Equity (USD M)", "Total K/L (USD M)"]
     
     fig_poin4 = px.bar(
         fase_inst_df,
@@ -342,12 +396,12 @@ with tab_output:
     # ==============================================================================
     # RINCIAN INSTRUMEN / PROGRAM PER SEGMEN PER FASE
     # ==============================================================================
-    st.header("🎨 4. Visualisasi Rincian Lengkap per Instrumen / Program")
+    st.header("🎨 5. Visualisasi Rincian Lengkap per Instrumen / Program")
     
     tab_kem, tab_dan, tab_kl = st.tabs(["🏛️ Kemenkeu (Per Instrumen Pajak/Impor)", "🏢 Danantara (Per Equity JV)", "🎓 K/L (Lengkap 7 Program Direct Spending)"])
     
     with tab_kem:
-        kem_cols = ["Tax Holiday (IDR T)", "Tax Allowance (IDR T)", "Super Deduction (IDR T)", "Fasilitas Impor (IDR T)"] if "IDR" in unit_mata_uang else ["Tax Holiday (USD M)", "Tax Allowance (USD M)", "Super Deduction (USD M)", "Fasilitas Impor (USD M)"]
+        kem_cols = ["Tax Holiday (IDR T)", "Tax Allowance (IDR T)", "Super Deduction (IDR T)", "Fasilitas Impor (IDR T)"] if is_idr else ["Tax Holiday (USD M)", "Tax Allowance (USD M)", "Super Deduction (USD M)", "Fasilitas Impor (USD M)"]
         df_kem_melt = df_calc_filtered.groupby(["Fase", "Segmen"])[kem_cols].sum().reset_index()
         
         fig_kem = px.bar(
@@ -362,7 +416,7 @@ with tab_output:
         st.plotly_chart(fig_kem, use_container_width=True)
 
     with tab_dan:
-        dan_col = "Danantara Equity (IDR T)" if "IDR" in unit_mata_uang else "Danantara Equity (USD M)"
+        dan_col = "Danantara Equity (IDR T)" if is_idr else "Danantara Equity (USD M)"
         df_dan_graph = df_calc_filtered.groupby(["Fase", "Segmen"])[dan_col].sum().reset_index()
         fig_dan = px.bar(
             df_dan_graph,
@@ -395,7 +449,7 @@ with tab_output:
         df_kl_full_graph["Teaching Factory (USD M)"] = df_kl_full_graph.apply(lambda r: r["Teaching Factory (USD M)"] / 2 if r["Segmen"] in ["Foundry", "ATP"] else 0, axis=1)
         df_kl_full_graph["Teaching Factory (IDR T)"] = (df_kl_full_graph["Teaching Factory (USD M)"] * kurs_usd) / 1000
 
-        kl_cols = ["Seed Funding (IDR T)", "LPDP (IDR T)", "Magang (IDR T)", "CoFunding Riset (IDR T)", "Pusat Desain Chip (IDR T)", "Teaching Factory (IDR T)", "Pilot Wafer Fab (IDR T)"] if "IDR" in unit_mata_uang else ["Seed Funding (USD M)", "LPDP (USD M)", "Magang (USD M)", "CoFunding Riset (USD M)", "Pusat Desain Chip (USD M)", "Teaching Factory (USD M)", "Pilot Wafer Fab (USD M)"]
+        kl_cols = ["Seed Funding (IDR T)", "LPDP (IDR T)", "Magang (IDR T)", "CoFunding Riset (IDR T)", "Pusat Desain Chip (IDR T)", "Teaching Factory (IDR T)", "Pilot Wafer Fab (IDR T)"] if is_idr else ["Seed Funding (USD M)", "LPDP (USD M)", "Magang (USD M)", "CoFunding Riset (USD M)", "Pusat Desain Chip (USD M)", "Teaching Factory (USD M)", "Pilot Wafer Fab (USD M)"]
 
         fig_kl = px.bar(
             df_kl_full_graph,
@@ -409,7 +463,7 @@ with tab_output:
         st.plotly_chart(fig_kl, use_container_width=True)
 
     st.markdown("---")
-    st.header("📋 5. Tabel Detail Rincian Akhir Simulasi (Dual Currency USD M & IDR T)")
+    st.header("📋 6. Tabel Detail Rincian Akhir Simulasi (Dual Currency USD M & IDR T)")
     
     st.dataframe(df_calc_filtered[[
         "Fase", "Segmen", "Sub-Kategori", "Jumlah Unit", 
