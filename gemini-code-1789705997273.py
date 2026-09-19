@@ -10,9 +10,8 @@ st.set_page_config(
 )
 
 st.title("⚡ Dashboard Simulasi Dukungan Fiskal Semikonduktor (2027–2045)")
-st.markdown("Alat bantu pengambilan keputusan terintegrasi untuk insentif perpajakan (Kemenkeu), penyertaan modal (Danantara), dan belanja K/L.")
 
-tab_asumsi, tab_output = st.tabs(["📝 PAGE 1: Asumsi & Parameter Interaktif", "📊 PAGE 2: Hasil Simulasi & Breakdown Dimensi Fiskal"])
+tab_asumsi, tab_output = st.tabs(["📝 PAGE 1: Asumsi & Parameter Interaktif", "📊 PAGE 2: Hasil Simulasi & Visualisasi Multidimensi"])
 
 # ==============================================================================
 # TAB 1: ASUMSI & PARAMETER INTERAKTIF (PAGE 1)
@@ -40,218 +39,250 @@ with tab_asumsi:
     st.markdown("---")
     st.header("2. Karakteristik Mikro 9 Sub-Kategori & Instrumen Utama")
     
-    # 9 Sub-Kategori Presisi
     df_char_init = pd.DataFrame([
-        {"Segmen": "Design House", "Sub-Kategori": "Small Scale", "Investasi USD M": 15.0, "Ramp-up": 1, "Asset Turnover (x)": 1.2, "EBT Margin": 0.15, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.60, "TH % Transisi": 0.30, "Durasi (Thn)": 5, "Rasio Impor (%)": 0.135, "Rasionalisasi": "Skala individual, di luar cakupan GMT."},
-        {"Segmen": "Design House", "Sub-Kategori": "Medium Scale", "Investasi USD M": 50.0, "Ramp-up": 1, "Asset Turnover (x)": 1.1, "EBT Margin": 0.20, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.80, "TH % Transisi": 0.40, "Durasi (Thn)": 5, "Rasio Impor (%)": 0.135, "Rasionalisasi": "Penguat ekosistem desain lokal."},
-        {"Segmen": "Design House", "Sub-Kategori": "Large Scale", "Investasi USD M": 200.0, "Ramp-up": 2, "Asset Turnover (x)": 1.0, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 7, "Rasio Impor (%)": 0.135, "Rasionalisasi": "Skala ekspansi desain/packaging besar."},
-        {"Segmen": "Foundry", "Sub-Kategori": "Small/Power Device", "Investasi USD M": 500.0, "Ramp-up": 2, "Asset Turnover (x)": 0.4, "EBT Margin": 0.20, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 10, "Rasio Impor (%)": 0.65625, "Rasionalisasi": "Fabrikasi komponen daya/spesifik."},
-        {"Segmen": "Foundry", "Sub-Kategori": "Medium/Power Device", "Investasi USD M": 1000.0, "Ramp-up": 4, "Asset Turnover (x)": 0.45, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 15, "Rasio Impor (%)": 0.65625, "Rasionalisasi": "Fasilitas wafer 8 inci mature node."},
-        {"Segmen": "Foundry", "Sub-Kategori": "Large Node/Logic", "Investasi USD M": 7000.0, "Ramp-up": 4, "Asset Turnover (x)": 0.4, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 25, "Rasio Impor (%)": 0.65625, "Rasionalisasi": "Skala raksasa global (misal: TSMC/GlobalFoundries)."},
-        {"Segmen": "Foundry", "Sub-Kategori": "Cutting Edge Technology", "Investasi USD M": 20000.0, "Ramp-up": 4, "Asset Turnover (x)": 0.35, "EBT Margin": 0.30, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 25, "Rasio Impor (%)": 0.65625, "Rasionalisasi": "Teknologi terdepan sub-5nm."},
-        {"Segmen": "ATP", "Sub-Kategori": "Fasilitas Perakitan ATP", "Investasi USD M": 300.0, "Ramp-up": 2, "Asset Turnover (x)": 1.0, "EBT Margin": 0.125, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 10, "Rasio Impor (%)": 0.595, "Rasionalisasi": "Assembly & testing konvensional."},
-        {"Segmen": "ATP", "Sub-Kategori": "Advance Packaging ATP (AI)", "Investasi USD M": 1000.0, "Ramp-up": 3, "Asset Turnover (x)": 1.0, "EBT Margin": 0.15, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 15, "Rasio Impor (%)": 0.595, "Rasionalisasi": "Teknologi pengemasan chip AI (CoWoS/3D)."}
+        {"Segmen": "Design House", "Sub-Kategori": "Small Scale", "Investasi USD M": 15.0, "Ramp-up": 1, "Asset Turnover (x)": 1.2, "EBT Margin": 0.15, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.60, "TH % Transisi": 0.30, "Durasi (Thn)": 5, "Rasio Impor (%)": 0.135},
+        {"Segmen": "Design House", "Sub-Kategori": "Medium Scale", "Investasi USD M": 50.0, "Ramp-up": 1, "Asset Turnover (x)": 1.1, "EBT Margin": 0.20, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.80, "TH % Transisi": 0.40, "Durasi (Thn)": 5, "Rasio Impor (%)": 0.135},
+        {"Segmen": "Design House", "Sub-Kategori": "Large Scale", "Investasi USD M": 200.0, "Ramp-up": 2, "Asset Turnover (x)": 1.0, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 7, "Rasio Impor (%)": 0.135},
+        {"Segmen": "Foundry", "Sub-Kategori": "Small/Power Device", "Investasi USD M": 500.0, "Ramp-up": 2, "Asset Turnover (x)": 0.4, "EBT Margin": 0.20, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 10, "Rasio Impor (%)": 0.65625},
+        {"Segmen": "Foundry", "Sub-Kategori": "Medium/Power Device", "Investasi USD M": 1000.0, "Ramp-up": 4, "Asset Turnover (x)": 0.45, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 15, "Rasio Impor (%)": 0.65625},
+        {"Segmen": "Foundry", "Sub-Kategori": "Large Node/Logic", "Investasi USD M": 7000.0, "Ramp-up": 4, "Asset Turnover (x)": 0.4, "EBT Margin": 0.25, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 25, "Rasio Impor (%)": 0.65625},
+        {"Segmen": "Foundry", "Sub-Kategori": "Cutting Edge Technology", "Investasi USD M": 20000.0, "Ramp-up": 4, "Asset Turnover (x)": 0.35, "EBT Margin": 0.30, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 25, "Rasio Impor (%)": 0.65625},
+        {"Segmen": "ATP", "Sub-Kategori": "Fasilitas Perakitan ATP", "Investasi USD M": 300.0, "Ramp-up": 2, "Asset Turnover (x)": 1.0, "EBT Margin": 0.125, "Instrumen Utama": "Tax Holiday", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 10, "Rasio Impor (%)": 0.595},
+        {"Segmen": "ATP", "Sub-Kategori": "Advance Packaging ATP (AI)", "Investasi USD M": 1000.0, "Ramp-up": 3, "Asset Turnover (x)": 1.0, "EBT Margin": 0.15, "Instrumen Utama": "Tax Allowance", "TH % Utama": 0.90, "TH % Transisi": 0.50, "Durasi (Thn)": 15, "Rasio Impor (%)": 0.595}
     ])
-    
     edited_char = st.data_editor(df_char_init, num_rows="fixed", use_container_width=True, key="char_editor_9sub")
 
     st.markdown("---")
-    st.header("3. Rincian Rencana Penambahan Unit Usaha (Rinci per 9 Sub-Kategori, Fase & Skenario)")
+    st.header("3. Rincian Rencana Penambahan Unit Usaha (A3)")
     
-    sub_kat_list = list(df_char_init["Sub-Kategori"])
-    fase_list = ["Fase 1 (2027-2029)", "Fase 2 (2030-2035)", "Fase 3 (2036-2045)"]
-    
-    # Preset Unit Usaha Rinci (Skenario 1, 2, 3)
     data_unit_full = [
-        # Fase 1
-        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Design House", "Sub-Kategori": "Small Scale", "Skenario 1": 4, "Skenario 2": 6, "Skenario 3": 7, "Catatan": "Inkubasi startup lokal"},
-        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Design House", "Sub-Kategori": "Medium Scale", "Skenario 1": 2, "Skenario 2": 2, "Skenario 3": 2, "Catatan": "Design center menengah"},
-        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Design House", "Sub-Kategori": "Large Scale", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0, "Catatan": "-"},
-        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Foundry", "Sub-Kategori": "Small/Power Device", "Skenario 1": 0, "Skenario 2": 1, "Skenario 3": 1, "Catatan": "Pilot Fab Power Dev"},
-        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Foundry", "Sub-Kategori": "Medium/Power Device", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0, "Catatan": "-"},
-        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Foundry", "Sub-Kategori": "Large Node/Logic", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0, "Catatan": "-"},
-        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Foundry", "Sub-Kategori": "Cutting Edge Technology", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0, "Catatan": "-"},
-        {"Fase": "Fase 1 (2027-2029)", "Segmen": "ATP", "Sub-Kategori": "Fasilitas Perakitan ATP", "Skenario 1": 2, "Skenario 2": 3, "Skenario 3": 4, "Catatan": "Perakitan standar"},
-        {"Fase": "Fase 1 (2027-2029)", "Segmen": "ATP", "Sub-Kategori": "Advance Packaging ATP (AI)", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0, "Catatan": "-"},
+        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Design House", "Sub-Kategori": "Small Scale", "Skenario 1": 4, "Skenario 2": 6, "Skenario 3": 7},
+        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Design House", "Sub-Kategori": "Medium Scale", "Skenario 1": 2, "Skenario 2": 2, "Skenario 3": 2},
+        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Design House", "Sub-Kategori": "Large Scale", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0},
+        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Foundry", "Sub-Kategori": "Small/Power Device", "Skenario 1": 0, "Skenario 2": 1, "Skenario 3": 1},
+        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Foundry", "Sub-Kategori": "Medium/Power Device", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0},
+        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Foundry", "Sub-Kategori": "Large Node/Logic", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0},
+        {"Fase": "Fase 1 (2027-2029)", "Segmen": "Foundry", "Sub-Kategori": "Cutting Edge Technology", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0},
+        {"Fase": "Fase 1 (2027-2029)", "Segmen": "ATP", "Sub-Kategori": "Fasilitas Perakitan ATP", "Skenario 1": 2, "Skenario 2": 3, "Skenario 3": 4},
+        {"Fase": "Fase 1 (2027-2029)", "Segmen": "ATP", "Sub-Kategori": "Advance Packaging ATP (AI)", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0},
         
-        # Fase 2
-        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Design House", "Sub-Kategori": "Small Scale", "Skenario 1": 10, "Skenario 2": 15, "Skenario 3": 20, "Catatan": "Skala komersial"},
-        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Design House", "Sub-Kategori": "Medium Scale", "Skenario 1": 5, "Skenario 2": 6, "Skenario 3": 10, "Catatan": "Ekspansi pasar"},
-        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Design House", "Sub-Kategori": "Large Scale", "Skenario 1": 0, "Skenario 2": 1, "Skenario 3": 2, "Catatan": "Pusat desain global"},
-        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Foundry", "Sub-Kategori": "Small/Power Device", "Skenario 1": 0, "Skenario 2": 1, "Skenario 3": 1, "Catatan": "Fasilitas kedua"},
-        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Foundry", "Sub-Kategori": "Medium/Power Device", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 1, "Catatan": "Wafer 8 inch"},
-        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Foundry", "Sub-Kategori": "Large Node/Logic", "Skenario 1": 1, "Skenario 2": 1, "Skenario 3": 1, "Catatan": "Legacy Fab mega proyek"},
-        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Foundry", "Sub-Kategori": "Cutting Edge Technology", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0, "Catatan": "-"},
-        {"Fase": "Fase 2 (2030-2035)", "Segmen": "ATP", "Sub-Kategori": "Fasilitas Perakitan ATP", "Skenario 1": 5, "Skenario 2": 8, "Skenario 3": 10, "Catatan": "Kapasitas tinggi"},
-        {"Fase": "Fase 2 (2030-2035)", "Segmen": "ATP", "Sub-Kategori": "Advance Packaging ATP (AI)", "Skenario 1": 1, "Skenario 2": 1, "Skenario 3": 1, "Catatan": "High-end packaging"},
+        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Design House", "Sub-Kategori": "Small Scale", "Skenario 1": 10, "Skenario 2": 15, "Skenario 3": 20},
+        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Design House", "Sub-Kategori": "Medium Scale", "Skenario 1": 5, "Skenario 2": 6, "Skenario 3": 10},
+        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Design House", "Sub-Kategori": "Large Scale", "Skenario 1": 0, "Skenario 2": 1, "Skenario 3": 2},
+        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Foundry", "Sub-Kategori": "Small/Power Device", "Skenario 1": 0, "Skenario 2": 1, "Skenario 3": 1},
+        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Foundry", "Sub-Kategori": "Medium/Power Device", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 1},
+        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Foundry", "Sub-Kategori": "Large Node/Logic", "Skenario 1": 1, "Skenario 2": 1, "Skenario 3": 1},
+        {"Fase": "Fase 2 (2030-2035)", "Segmen": "Foundry", "Sub-Kategori": "Cutting Edge Technology", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0},
+        {"Fase": "Fase 2 (2030-2035)", "Segmen": "ATP", "Sub-Kategori": "Fasilitas Perakitan ATP", "Skenario 1": 5, "Skenario 2": 8, "Skenario 3": 10},
+        {"Fase": "Fase 2 (2030-2035)", "Segmen": "ATP", "Sub-Kategori": "Advance Packaging ATP (AI)", "Skenario 1": 1, "Skenario 2": 1, "Skenario 3": 1},
         
-        # Fase 3
-        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Design House", "Sub-Kategori": "Small Scale", "Skenario 1": 20, "Skenario 2": 25, "Skenario 3": 30, "Catatan": "Ekosistem mandiri"},
-        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Design House", "Sub-Kategori": "Medium Scale", "Skenario 1": 10, "Skenario 2": 12, "Skenario 3": 15, "Catatan": "Desain ekspor"},
-        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Design House", "Sub-Kategori": "Large Scale", "Skenario 1": 2, "Skenario 2": 5, "Skenario 3": 5, "Catatan": "Pusat R&D multinasional"},
-        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Foundry", "Sub-Kategori": "Small/Power Device", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0, "Catatan": "-"},
-        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Foundry", "Sub-Kategori": "Medium/Power Device", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0, "Catatan": "-"},
-        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Foundry", "Sub-Kategori": "Large Node/Logic", "Skenario 1": 0, "Skenario 2": 1, "Skenario 3": 1, "Catatan": "Dukungan suplai lokal"},
-        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Foundry", "Sub-Kategori": "Cutting Edge Technology", "Skenario 1": 1, "Skenario 2": 1, "Skenario 3": 1, "Catatan": "Sub-5nm Fab terdepan"},
-        {"Fase": "Fase 3 (2036-2045)", "Segmen": "ATP", "Sub-Kategori": "Fasilitas Perakitan ATP", "Skenario 1": 5, "Skenario 2": 8, "Skenario 3": 10, "Catatan": "Maturitas perakitan"},
-        {"Fase": "Fase 3 (2036-2045)", "Segmen": "ATP", "Sub-Kategori": "Advance Packaging ATP (AI)", "Skenario 1": 2, "Skenario 2": 2, "Skenario 3": 2, "Catatan": "Advanced AI packaging hub"}
+        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Design House", "Sub-Kategori": "Small Scale", "Skenario 1": 20, "Skenario 2": 25, "Skenario 3": 30},
+        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Design House", "Sub-Kategori": "Medium Scale", "Skenario 1": 10, "Skenario 2": 12, "Skenario 3": 15},
+        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Design House", "Sub-Kategori": "Large Scale", "Skenario 1": 2, "Skenario 2": 5, "Skenario 3": 5},
+        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Foundry", "Sub-Kategori": "Small/Power Device", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0},
+        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Foundry", "Sub-Kategori": "Medium/Power Device", "Skenario 1": 0, "Skenario 2": 0, "Skenario 3": 0},
+        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Foundry", "Sub-Kategori": "Large Node/Logic", "Skenario 1": 0, "Skenario 2": 1, "Skenario 3": 1},
+        {"Fase": "Fase 3 (2036-2045)", "Segmen": "Foundry", "Sub-Kategori": "Cutting Edge Technology", "Skenario 1": 1, "Skenario 2": 1, "Skenario 3": 1},
+        {"Fase": "Fase 3 (2036-2045)", "Segmen": "ATP", "Sub-Kategori": "Fasilitas Perakitan ATP", "Skenario 1": 5, "Skenario 2": 8, "Skenario 3": 10},
+        {"Fase": "Fase 3 (2036-2045)", "Segmen": "ATP", "Sub-Kategori": "Advance Packaging ATP (AI)", "Skenario 1": 2, "Skenario 2": 2, "Skenario 3": 2}
     ]
-    
-    df_unit_init = pd.DataFrame(data_unit_full)
-    edited_unit = st.data_editor(df_unit_init, num_rows="fixed", use_container_width=True, key="unit_editor_full")
+    edited_unit = st.data_editor(pd.DataFrame(data_unit_full), num_rows="fixed", use_container_width=True, key="unit_editor_full")
 
     st.markdown("---")
-    col_d1, col_d2 = st.columns(2)
+    col_k1, col_k2 = st.columns(2)
     
-    with col_d1:
-        st.header("4. Asumsi Danantara (% Ekuitas dalam JV)")
+    with col_k1:
+        st.header("4. Asumsi Beasiswa, Magang & Co-Funding per Segmen")
+        df_sdm_init = pd.DataFrame([
+            {"Segmen": "Design House", "LPDP (Orang/Unit)": 15, "LPDP Biaya/Orang (USD M)": 0.22, "Magang (Orang/Unit)": 50, "Magang Biaya/Orang (USD M)": 0.002, "Co-Funding Riset/Unit (USD M)": 1.67},
+            {"Segmen": "Foundry", "LPDP (Orang/Unit)": 10, "LPDP Biaya/Orang (USD M)": 0.22, "Magang (Orang/Unit)": 200, "Magang Biaya/Orang (USD M)": 0.002, "Co-Funding Riset/Unit (USD M)": 1.67},
+            {"Segmen": "ATP", "LPDP (Orang/Unit)": 5, "LPDP Biaya/Orang (USD M)": 0.22, "Magang (Orang/Unit)": 200, "Magang Biaya/Orang (USD M)": 0.002, "Co-Funding Riset/Unit (USD M)": 1.67}
+        ])
+        edited_sdm = st.data_editor(df_sdm_init, use_container_width=True, key="sdm_editor")
+        
+    with col_k2:
+        st.header("5. Asumsi Danantara (% Ekuitas dalam JV)")
         df_danantara_init = pd.DataFrame([
-            {"Segmen": "Design House", "% Ekuitas Danantara": 0.30, "Catatan": "Kemitraan strategis (misal: Danantara-Arm)"},
-            {"Segmen": "Foundry", "% Ekuitas Danantara": 0.30, "Catatan": "Preseden SSMC/TSMC/GlobalFoundries"},
-            {"Segmen": "ATP", "% Ekuitas Danantara": 0.25, "Catatan": "Segmen menengah packaging"}
+            {"Segmen": "Design House", "% Ekuitas Danantara": 0.30},
+            {"Segmen": "Foundry", "% Ekuitas Danantara": 0.30},
+            {"Segmen": "ATP", "% Ekuitas Danantara": 0.25}
         ])
         edited_danantara = st.data_editor(df_danantara_init, use_container_width=True, key="danantara_editor")
-        
-    with col_d2:
-        st.header("5. Asumsi Rincian Program Belanja K/L")
-        df_kl_init = pd.DataFrame([
-            {"Program K/L": "Seed Funding Design House", "Cakupan": "Spesifik Design House", "Biaya Unit (USD M)": 1.5, "Rasionalisasi": "Hibah modal desain awal"},
-            {"Program K/L": "Beasiswa LPDP (Tenaga Ahli)", "Cakupan": "Lintas Ekosistem", "Biaya Unit (USD M)": 0.22, "Rasionalisasi": "Pendidikan spesialis S2/S3 luar negeri"},
-            {"Program K/L": "Co-funding Research Industri", "Cakupan": "Lintas Ekosistem", "Biaya Unit (USD M)": 1.67, "Rasionalisasi": "Skema RISPRO matching grant"},
-            {"Program K/L": "Program Magang Vokasi", "Cakupan": "Lintas Ekosistem", "Biaya Unit (USD M)": 0.002, "Rasionalisasi": "Uang saku & insentif perakitan/pabrik"},
-            {"Program K/L": "Pusat Desain Chip (BRIN/Kemenperin)", "Cakupan": "Lintas Ekosistem", "Biaya Unit (USD M)": 35.0, "Rasionalisasi": "Fasilitas EDA tools terpusat"},
-            {"Program K/L": "Teaching Factory (Kemenperin)", "Cakupan": "Lintas Ekosistem", "Biaya Unit (USD M)": 15.0, "Rasionalisasi": "Fasilitas latih perakitan SMK/Politeknik"},
-            {"Program K/L": "Pusat Pilot Wafer Fab", "Cakupan": "Spesifik Foundry", "Biaya Unit (USD M)": 75.0, "Rasionalisasi": "Pusat riset & uji coba wafer fab nasional"}
+
+    st.markdown("---")
+    st.header("6. Asumsi Program K/L Terpusat (Tabel G3 & G4 - Input Fase x Skenario)")
+    
+    col_infra1, col_infra2 = st.columns(2)
+    with col_infra1:
+        st.subheader("G3. Pusat Desain Chip & Teaching Factory (USD M per Fase)")
+        df_g3_init = pd.DataFrame([
+            {"Program": "Pusat Desain Chip", "Fase": "Fase 1 (2027-2029)", "Skenario 1": 20.0, "Skenario 2": 35.0, "Skenario 3": 60.0},
+            {"Program": "Pusat Desain Chip", "Fase": "Fase 2 (2030-2035)", "Skenario 1": 30.0, "Skenario 2": 45.0, "Skenario 3": 70.0},
+            {"Program": "Pusat Desain Chip", "Fase": "Fase 3 (2036-2045)", "Skenario 1": 40.0, "Skenario 2": 55.0, "Skenario 3": 80.0},
+            {"Program": "Teaching Factory", "Fase": "Fase 1 (2027-2029)", "Skenario 1": 7.50, "Skenario 2": 7.80, "Skenario 3": 8.00},
+            {"Program": "Teaching Factory", "Fase": "Fase 2 (2030-2035)", "Skenario 1": 15.00, "Skenario 2": 15.30, "Skenario 3": 15.50},
+            {"Program": "Teaching Factory", "Fase": "Fase 3 (2036-2045)", "Skenario 1": 25.00, "Skenario 2": 25.30, "Skenario 3": 25.50}
         ])
-        edited_kl = st.data_editor(df_kl_init, use_container_width=True, key="kl_editor")
+        edited_g3 = st.data_editor(df_g3_init, use_container_width=True, key="g3_editor")
+
+    with col_infra2:
+        st.subheader("G4. Pusat Pilot Wafer Fab (Biaya & Jumlah Pusat)")
+        df_g4_init = pd.DataFrame([
+            {"Parameter": "Biaya per pusat (USD M)", "Skenario 1": 50.0, "Skenario 2": 75.0, "Skenario 3": 100.0},
+            {"Parameter": "Jumlah pusat di Fase 1 (2027-2029)", "Skenario 1": 1.0, "Skenario 2": 1.0, "Skenario 3": 1.0},
+            {"Parameter": "Jumlah pusat di Fase 2 (2030-2035)", "Skenario 1": 1.0, "Skenario 2": 1.0, "Skenario 3": 1.0},
+            {"Parameter": "Jumlah pusat di Fase 3 (2036-2045)", "Skenario 1": 0.0, "Skenario 2": 0.0, "Skenario 3": 1.0}
+        ])
+        edited_g4 = st.data_editor(df_g4_init, use_container_width=True, key="g4_editor")
 
 # ==============================================================================
-# TAB 2: HASIL SIMULASI & BREAKDOWN DIMENSI FISKAL (PAGE 2)
+# TAB 2: HASIL SIMULASI & VISUALISASI MULTIDIMENSI (PAGE 2)
 # ==============================================================================
 with tab_output:
-    st.sidebar.header("🕹️ Filter Dimensi Simulasi")
+    st.sidebar.header("🕹️ Filter Simulasi Dashboard")
     skenario_pilihan = st.sidebar.selectbox("Pilih Skenario Proyeksi:", ["Skenario 1 (Konservatif)", "Skenario 2 (Moderat)", "Skenario 3 (Optimis)"])
     col_skenario_map = {"Skenario 1 (Konservatif)": "Skenario 1", "Skenario 2 (Moderat)": "Skenario 2", "Skenario 3 (Optimis)": "Skenario 3"}
     skenario_col = col_skenario_map[skenario_pilihan]
     
     fase_pilihan = st.sidebar.multiselect("Pilih Fase Evaluasi:", ["Fase 1 (2027-2029)", "Fase 2 (2030-2035)", "Fase 3 (2036-2045)"], default=["Fase 1 (2027-2029)", "Fase 2 (2030-2035)", "Fase 3 (2036-2045)"])
 
-    # LOGIKA ENGINE PERHITUNGAN SIMULASI
+    # ENGINE KALKULASI UTAMA
     df_m = pd.merge(edited_unit, edited_char, on=["Segmen", "Sub-Kategori"])
     df_calc = df_m[df_m["Fase"].isin(fase_pilihan)].copy()
     
-    # Calculate Base Metrics
     df_calc["Jumlah Unit"] = df_calc[skenario_col]
     df_calc["Investasi USD M"] = df_calc["Jumlah Unit"] * df_calc["Investasi USD M"]
     df_calc["Investasi IDR T"] = (df_calc["Investasi USD M"] * kurs_usd) / 1000
 
-    # 1. PERHITUNGAN INSTRUMEN KEMENKEU (FOREGONE REVENUE)
-    # Tax Holiday: (Asset * Turn * EBT% * PPh%) * (TH_Utama * Durasi + TH_Transisi * 2)
-    df_calc["Kemenkeu - Tax Holiday (IDR T)"] = (df_calc["Investasi IDR T"] * df_calc["Asset Turnover (x)"] * df_calc["EBT Margin"] * pph_badan) * \
-                                                ((df_calc["TH % Utama"] * df_calc["Durasi (Thn)"]) + (df_calc["TH % Transisi"] * durasi_transisi_th)) * \
-                                                (df_calc["Instrumen Utama"] == "Tax Holiday").astype(int)
+    # KEMENKEU
+    df_calc["Tax Holiday (IDR T)"] = (df_calc["Investasi IDR T"] * df_calc["Asset Turnover (x)"] * df_calc["EBT Margin"] * pph_badan) * \
+                                      ((df_calc["TH % Utama"] * df_calc["Durasi (Thn)"]) + (df_calc["TH % Transisi"] * durasi_transisi_th)) * \
+                                      (df_calc["Instrumen Utama"] == "Tax Holiday").astype(int)
+    df_calc["Tax Allowance (IDR T)"] = (df_calc["Investasi IDR T"] * 0.30 * pph_badan) * (df_calc["Instrumen Utama"] == "Tax Allowance").astype(int)
+    df_calc["Super Deduction (IDR T)"] = (df_calc["Investasi IDR T"] * 0.03 * super_deduction * pph_badan)
+    df_calc["Fasilitas Impor (IDR T)"] = df_calc["Investasi IDR T"] * df_calc["Rasio Impor (%)"] * total_tarif_impor
+    df_calc["Total Kemenkeu (IDR T)"] = df_calc["Tax Holiday (IDR T)"] + df_calc["Tax Allowance (IDR T)"] + df_calc["Super Deduction (IDR T)"] + df_calc["Fasilitas Impor (IDR T)"]
 
-    # Tax Allowance: 30% dari Investasi (5% x 6 thn) x Tarif PPh 22%
-    df_calc["Kemenkeu - Tax Allowance (IDR T)"] = (df_calc["Investasi IDR T"] * 0.30 * pph_badan) * (df_calc["Instrumen Utama"] == "Tax Allowance").astype(int)
-    
-    # Super Deduction R&D: 200% x Estimasi Biaya R&D (dianggar 3% dari inv) x PPh %
-    df_calc["Kemenkeu - Super Deduction (IDR T)"] = (df_calc["Investasi IDR T"] * 0.03 * super_deduction * pph_badan)
-    
-    # Pembebasan Bea Masuk & Impor: Inv * Rasio Impor * Total Tarif Impor Efektif
-    df_calc["Kemenkeu - Fasilitas Impor (IDR T)"] = df_calc["Investasi IDR T"] * df_calc["Rasio Impor (%)"] * total_tarif_impor
-    
-    df_calc["Total Kemenkeu (IDR T)"] = df_calc["Kemenkeu - Tax Holiday (IDR T)"] + df_calc["Kemenkeu - Tax Allowance (IDR T)"] + \
-                                       df_calc["Kemenkeu - Super Deduction (IDR T)"] + df_calc["Kemenkeu - Fasilitas Impor (IDR T)"]
-
-    # 2. PERHITUNGAN DANANTARA (EQUITY INJECTION)
+    # DANANTARA
     df_calc = pd.merge(df_calc, edited_danantara[["Segmen", "% Ekuitas Danantara"]], on="Segmen")
-    df_calc["Danantara - Equity Injection (IDR T)"] = df_calc["Investasi IDR T"] * df_calc["% Ekuitas Danantara"]
+    df_calc["Danantara Equity (IDR T)"] = df_calc["Investasi IDR T"] * df_calc["% Ekuitas Danantara"]
 
-    # 3. PERHITUNGAN K/L (DIRECT APBN SPENDING)
-    df_calc["KL - Seed Funding (IDR T)"] = (df_calc["Jumlah Unit"] * 1.5 * kurs_usd / 1000) * (df_calc["Segmen"] == "Design House").astype(int)
-    df_calc["KL - Pilot Wafer Fab (IDR T)"] = (df_calc["Jumlah Unit"] * 75.0 * kurs_usd / 1000) * (df_calc["Segmen"] == "Foundry").astype(int) * 0.2
-    df_calc["Total KL Spesifik (IDR T)"] = df_calc["KL - Seed Funding (IDR T)"] + df_calc["KL - Pilot Wafer Fab (IDR T)"]
+    # K/L PER SEGMEN (LPDP, MAGANG, CO-FUNDING)
+    df_calc = pd.merge(df_calc, edited_sdm, on="Segmen")
+    df_calc["KL - LPDP (IDR T)"] = (df_calc["Jumlah Unit"] * df_calc["LPDP (Orang/Unit)"] * df_calc["LPDP Biaya/Orang (USD M)"] * kurs_usd) / 1000
+    df_calc["KL - Magang (IDR T)"] = (df_calc["Jumlah Unit"] * df_calc["Magang (Orang/Unit)"] * df_calc["Magang Biaya/Orang (USD M)"] * kurs_usd) / 1000
+    df_calc["KL - CoFunding Riset (IDR T)"] = (df_calc["Jumlah Unit"] * df_calc["Co-Funding Riset/Unit (USD M)"] * kurs_usd) / 1000
+    df_calc["Total KL Spesifik Segmen (IDR T)"] = df_calc["KL - LPDP (IDR T)"] + df_calc["KL - Magang (IDR T)"] + df_calc["KL - CoFunding Riset (IDR T)"]
 
-    st.subheader("1. Ringkasan Matriks Dukungan Publik per Segmen & Lintas Ekosistem")
+    # K/L TERPUSAT (INFRASTRUKTUR PER FASE)
+    biaya_pilot_fab = edited_g4[edited_g4["Parameter"] == "Biaya per pusat (USD M)"][skenario_col].values[0]
     
-    summary_seg = df_calc.groupby("Segmen").agg({
-        "Investasi IDR T": "sum",
+    g3_filtered = edited_g3[edited_g3["Fase"].isin(fase_pilihan)].copy()
+    g3_grouped = g3_filtered.groupby("Fase")[skenario_col].sum().reset_index()
+    g3_grouped.rename(columns={skenario_col: "G3_USD_M"}, inplace=True)
+
+    g4_p1 = edited_g4[edited_g4["Parameter"] == "Jumlah pusat di Fase 1 (2027-2029)"][skenario_col].values[0] * biaya_pilot_fab
+    g4_p2 = edited_g4[edited_g4["Parameter"] == "Jumlah pusat di Fase 2 (2030-2035)"][skenario_col].values[0] * biaya_pilot_fab
+    g4_p3 = edited_g4[edited_g4["Parameter"] == "Jumlah pusat di Fase 3 (2036-2045)"][skenario_col].values[0] * biaya_pilot_fab
+    
+    df_g4_fase = pd.DataFrame([
+        {"Fase": "Fase 1 (2027-2029)", "G4_USD_M": g4_p1},
+        {"Fase": "Fase 2 (2030-2035)", "G4_USD_M": g4_p2},
+        {"Fase": "Fase 3 (2036-2045)", "G4_USD_M": g4_p3}
+    ])
+    
+    df_infra_fase = pd.merge(g3_grouped, df_g4_fase, on="Fase")
+    df_infra_fase["KL Terpusat (IDR T)"] = ((df_infra_fase["G3_USD_M"] + df_infra_fase["G4_USD_M"]) * kurs_usd) / 1000
+
+    # ---------------------------------------------------------
+    # VISUALISASI POIN 4: DUKUNGAN FISKAL PER INSTITUSI PER FASE
+    # ---------------------------------------------------------
+    st.subheader(f"📊 1. Proyeksi Dukungan Fiskal per Institusi per Fase ({skenario_pilihan})")
+    
+    fase_inst_df = df_calc.groupby("Fase").agg({
         "Total Kemenkeu (IDR T)": "sum",
-        "Danantara - Equity Injection (IDR T)": "sum",
-        "Total KL Spesifik (IDR T)": "sum"
-    }).reset_index()
-    
-    # Tambah Lintas Ekosistem KL
-    kl_lintas_val = (35.0 + 15.0 + (10 * 0.22) + (5 * 1.67)) * kurs_usd / 1000  # Estimasi gabungan LPDP, R&D, Teaching Factory
-    df_lintas = pd.DataFrame([{
-        "Segmen": "4. Lintas Ekosistem (KL)",
-        "Investasi IDR T": 0.0,
-        "Total Kemenkeu (IDR T)": 0.0,
-        "Danantara - Equity Injection (IDR T)": 0.0,
-        "Total KL Spesifik (IDR T)": kl_lintas_val
-    }])
-    
-    sum_final = pd.concat([summary_seg, df_lintas], ignore_index=True)
-    sum_final["Total Support Publik (IDR T)"] = sum_final["Total Kemenkeu (IDR T)"] + sum_final["Danantara - Equity Injection (IDR T)"] + sum_final["Total KL Spesifik (IDR T)"]
-    sum_final["Rasio Support Kemenkeu (%)"] = (sum_final["Total Kemenkeu (IDR T)"] / sum_final["Investasi IDR T"].replace(0, 1)) * 100
-    sum_final["Rasio Total Support (%)"] = (sum_final["Total Support Publik (IDR T)"] / sum_final["Investasi IDR T"].replace(0, 1)) * 100
-
-    st.dataframe(sum_final.style.format({
-        "Investasi IDR T": "{:,.2f}",
-        "Total Kemenkeu (IDR T)": "{:,.2f}",
-        "Danantara - Equity Injection (IDR T)": "{:,.2f}",
-        "Total KL Spesifik (IDR T)": "{:,.2f}",
-        "Total Support Publik (IDR T)": "{:,.2f}",
-        "Rasio Support Kemenkeu (%)": "{:.1f}%",
-        "Rasio Total Support (%)": "{:.1f}%"
-    }), use_container_width=True)
-
-    st.markdown("---")
-    st.subheader("2. BREAKDOWN DETAILED: Insentif Fiskal per Instansi, Segmen, Sub-Kategori, Instrumen, dan Fase")
-    st.caption("Tabel multidimensi di bawah ini memberikan gambaran komprehensif hingga level paling teknis bagi pembaca yang ingin mendalami angka simulasi.")
-
-    # Table Rinci Multidimensi
-    df_detail_view = df_calc[[
-        "Fase", "Segmen", "Sub-Kategori", "Jumlah Unit", "Investasi IDR T",
-        "Kemenkeu - Tax Holiday (IDR T)", "Kemenkeu - Tax Allowance (IDR T)", 
-        "Kemenkeu - Super Deduction (IDR T)", "Kemenkeu - Fasilitas Impor (IDR T)",
-        "Total Kemenkeu (IDR T)", "Danantara - Equity Injection (IDR T)",
-        "Total KL Spesifik (IDR T)"
-    ]].copy()
-
-    st.dataframe(df_detail_view.style.format({
-        "Investasi IDR T": "{:,.2f}",
-        "Kemenkeu - Tax Holiday (IDR T)": "{:,.2f}",
-        "Kemenkeu - Tax Allowance (IDR T)": "{:,.2f}",
-        "Kemenkeu - Super Deduction (IDR T)": "{:,.2f}",
-        "Kemenkeu - Fasilitas Impor (IDR T)": "{:,.2f}",
-        "Total Kemenkeu (IDR T)": "{:,.2f}",
-        "Danantara - Equity Injection (IDR T)": "{:,.2f}",
-        "Total KL Spesifik (IDR T)": "{:,.2f}"
-    }), use_container_width=True)
-
-    st.markdown("---")
-    st.subheader("3. Grafik Perbandingan Komposisi Instrumen per Fase")
-    
-    df_fase_graph = df_calc.groupby("Fase").agg({
-        "Kemenkeu - Tax Holiday (IDR T)": "sum",
-        "Kemenkeu - Tax Allowance (IDR T)": "sum",
-        "Kemenkeu - Fasilitas Impor (IDR T)": "sum",
-        "Danantara - Equity Injection (IDR T)": "sum",
-        "Total KL Spesifik (IDR T)": "sum"
+        "Danantara Equity (IDR T)": "sum",
+        "Total KL Spesifik Segmen (IDR T)": "sum"
     }).reset_index()
 
-    fig_fase = px.bar(
-        df_fase_graph, 
-        x="Fase", 
-        y=[
-            "Kemenkeu - Tax Holiday (IDR T)", 
-            "Kemenkeu - Tax Allowance (IDR T)", 
-            "Kemenkeu - Fasilitas Impor (IDR T)",
-            "Danantara - Equity Injection (IDR T)",
-            "Total KL Spesifik (IDR T)"
-        ],
-        title=f"Sebaran Alokasi Dukungan Fiskal & Modal per Fase ({skenario_pilihan})",
-        barmode="stack"
+    fase_inst_df = pd.merge(fase_inst_df, df_infra_fase[["Fase", "KL Terpusat (IDR T)"]], on="Fase", how="left")
+    fase_inst_df["Total K/L (IDR T)"] = fase_inst_df["Total KL Spesifik Segmen (IDR T)"] + fase_inst_df["KL Terpusat (IDR T)"]
+
+    fig_poin4 = px.bar(
+        fase_inst_df,
+        x="Fase",
+        y=["Total Kemenkeu (IDR T)", "Danantara Equity (IDR T)", "Total K/L (IDR T)"],
+        title=f"Total Dukungan Fiskal & Modal per Institusi per Fase - {skenario_pilihan}",
+        barmode="group",
+        labels={"value": "Triliun IDR", "variable": "Institusi Pengampu"}
     )
-    st.plotly_chart(fig_fase, use_container_width=True)
+    st.plotly_chart(fig_poin4, use_container_width=True)
+
+    st.markdown("---")
+    
+    # ---------------------------------------------------------
+    # VISUALISASI POIN 5: BREAKDOWN PER INSTRUMEN PER SEGMEN PER FASE
+    # ---------------------------------------------------------
+    st.subheader("🎨 2. Visualisasi Rincian per Instrumen / Program (Per Segmen & Fase)")
+    
+    tab_kem, tab_dan, tab_kl = st.tabs(["🏛️ Kemenkeu (Per Instrumen)", "🏢 Danantara (Per Equity)", "🎓 K/L (Per Program)"])
+    
+    with tab_kem:
+        df_kem_melt = df_calc.groupby(["Fase", "Segmen"]).agg({
+            "Tax Holiday (IDR T)": "sum",
+            "Tax Allowance (IDR T)": "sum",
+            "Super Deduction (IDR T)": "sum",
+            "Fasilitas Impor (IDR T)": "sum"
+        }).reset_index()
+        
+        fig_kem = px.bar(
+            df_kem_melt,
+            x="Fase",
+            y=["Tax Holiday (IDR T)", "Tax Allowance (IDR T)", "Super Deduction (IDR T)", "Fasilitas Impor (IDR T)"],
+            facet_col="Segmen",
+            title="Breakdown Instrumen Kemenkeu per Segmen per Fase",
+            barmode="stack"
+        )
+        st.plotly_chart(fig_kem, use_container_width=True)
+
+    with tab_dan:
+        df_dan_graph = df_calc.groupby(["Fase", "Segmen"])["Danantara Equity (IDR T)"].sum().reset_index()
+        fig_dan = px.bar(
+            df_dan_graph,
+            x="Fase",
+            y="Danantara Equity (IDR T)",
+            color="Segmen",
+            title="Penyertaan Modal Danantara per Segmen per Fase",
+            barmode="group"
+        )
+        st.plotly_chart(fig_dan, use_container_width=True)
+
+    with tab_kl:
+        df_kl_melt = df_calc.groupby(["Fase", "Segmen"]).agg({
+            "KL - LPDP (IDR T)": "sum",
+            "KL - Magang (IDR T)": "sum",
+            "KL - CoFunding Riset (IDR T)": "sum"
+        }).reset_index()
+        
+        fig_kl = px.bar(
+            df_kl_melt,
+            x="Fase",
+            y=["KL - LPDP (IDR T)", "KL - Magang (IDR T)", "KL - CoFunding Riset (IDR T)"],
+            facet_col="Segmen",
+            title="Breakdown Program Belanja K/L Spesifik Segmen per Fase",
+            barmode="stack"
+        )
+        st.plotly_chart(fig_kl, use_container_width=True)
+
+    st.markdown("---")
+    st.subheader("📋 3. Tabel Detail Rincian Akhir Simulasi")
+    
+    st.dataframe(df_calc[[
+        "Fase", "Segmen", "Sub-Kategori", "Jumlah Unit", "Investasi IDR T",
+        "Tax Holiday (IDR T)", "Tax Allowance (IDR T)", "Super Deduction (IDR T)", "Fasilitas Impor (IDR T)",
+        "Danantara Equity (IDR T)", "KL - LPDP (IDR T)", "KL - Magang (IDR T)", "KL - CoFunding Riset (IDR T)"
+    ]].style.format({
+        "Investasi IDR T": "{:,.2f}", "Tax Holiday (IDR T)": "{:,.2f}", "Tax Allowance (IDR T)": "{:,.2f}",
+        "Super Deduction (IDR T)": "{:,.2f}", "Fasilitas Impor (IDR T)": "{:,.2f}", "Danantara Equity (IDR T)": "{:,.2f}",
+        "KL - LPDP (IDR T)": "{:,.2f}", "KL - Magang (IDR T)": "{:,.2f}", "KL - CoFunding Riset (IDR T)": "{:,.2f}"
+    }), use_container_width=True)
